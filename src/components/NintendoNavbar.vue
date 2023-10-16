@@ -1,17 +1,16 @@
-<script>
-export default {
-  data() {
-    return {
-      menuItems: [
+<script setup>
+import PButton from 'primevue/button';
+import { useUser } from '@/composables/useUser'
+import {ref} from 'vue'
+const { user, googleRegister, googleLogout } = useUser()
+
+const menuItems = ref([
         { id: 1, label: 'Главная', route: '/' },
         { id: 2, label: 'Игры', route: '/games' },
         { id: 3, label: 'О нас', route: '/about' },
         { id: 4, label: 'Покупки', route: '/purchases' }
-      ]
-    }
-  }
-}
-</script>
+      ])
+</script> 
 
 <template>
   <div class="ninoNavbar">
@@ -26,10 +25,25 @@ export default {
           </ul>
         </nav>
       </div>
-      <div class="logo2"></div>
-      <div class="ninoRegistration">
-        <a>Log in</a>
-        <a>Sing up</a>
+      <div class="side">
+        <p-button 
+        class="btn"
+          v-if="!user"
+          type="button"
+          @click="googleRegister"
+          label="Войти"
+          icon="pi pi-user"
+          text
+        ></p-button>
+        <p-button
+        class="btn"
+          v-else
+          type="button"
+          @click="googleLogout"
+          label="Выйти"
+          icon="pi pi-sign-out"
+          text 
+        ></p-button>
       </div>
     </div>
   </div>
@@ -48,33 +62,24 @@ export default {
 .nav {
   padding-top: 5px;
   display: flex;
-  justify-content: center;
-  background-color: #ffffff29;
+  justify-content: space-between;
+  height:100px;
+  background-size: cover;
+  background-image: url(../assets/navbar_back.jpeg);
 }
 .logo {
-  background-image: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/ec545603-cf4e-48e0-936d-5376ea12fdc0/dfki7h9-9cc91468-b3aa-4483-802e-aee67dfe229c.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VjNTQ1NjAzLWNmNGUtNDhlMC05MzZkLTUzNzZlYTEyZmRjMFwvZGZraTdoOS05Y2M5MTQ2OC1iM2FhLTQ0ODMtODAyZS1hZWU2N2RmZTIyOWMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.FBAJenHk7Ozl3vZNlfevBirRnDrP2sdAhKsnqzyImTI);
   background-size: cover;
-  height: 80px;
-  width: 97px;
+  height: 70px;
+  width: 60px;
   margin-left: 20px;
 }
-.logo2 {
-  background-image: url(https://static.miraheze.org/rytpwiki/thumb/3/3e/%D0%9B%D1%83%D0%B8%D0%B4%D0%B6%D0%B81.png/300px-%D0%9B%D1%83%D0%B8%D0%B4%D0%B6%D0%B81.png);
-  background-size: cover;
-  height: 80px;
-  width: 110px;
-  margin-left: -30px;
-}
 
-.ninoRegistration {
-  margin-top: 30px;
-  margin-left: 10px;
-}
+
 
 nav {
-  margin: 0;
   padding: 10px;
   text-align: center;
+  margin-top: 10px;
 }
 
 ul {
@@ -85,25 +90,36 @@ ul a {
   text-decoration: none;
   color: white;
   margin-right: 80px;
-  margin-top: 30px;
   text-transform: uppercase;
   font-family: Montserrat;
   font-size: 18px;
   font-weight: 600;
 }
 
-a {
-  text-decoration: none;
-  color: white;
-  margin-right: 13px;
-  text-transform: uppercase;
-  font-family: Montserrat;
-  font-size: 12px;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
 a:hover {
   color: black;
 }
+
+.btn {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: white;
+  margin-top: 20px;
+  margin-right: 13px;
+  text-transform: uppercase;
+  font-family: Montserrat;
+  font-size: 17px;
+  transition: color 0.3s ease;
+}
+
+.btn:hover {
+  color: black;
+}
+
+.p-button-label {
+  font-weight: 600;
+}
+
+
+
 </style>
