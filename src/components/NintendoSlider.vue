@@ -12,27 +12,23 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      slides: [
-        'https://kumundra.com/wp-content/uploads/2023/03/1677694615_Insider-Claims-Switch-2-sera-annonce-cette-annee.jpg',
-        'https://4pda.to/s/as6yz0hOpVsxDASQU4ZSJxpFhz1tZa.jpg',
-        'https://www.allround-pc.com/wp-content/uploads/2021/07/Nintendo-Switch-OLED-Modell-Konsole-1.jpg',
-        'https://assetsio.reedpopcdn.com/nintendo-switch-pro_2TAPP3I.jpg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp',
-      ],
-      currentIndex: 0
-    }
-  },
-  methods: {
-    nextSlide() {
-      this.currentIndex = (this.currentIndex + 1) % this.slides.length
-    },
-    prevSlide() {
-      this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.slides.length - 1
-    }
-  }
+<script setup>
+import {ref} from 'vue'
+
+const slides = ref([
+  'https://kumundra.com/wp-content/uploads/2023/03/1677694615_Insider-Claims-Switch-2-sera-annonce-cette-annee.jpg',
+  'https://4pda.to/s/as6yz0hOpVsxDASQU4ZSJxpFhz1tZa.jpg',
+  'https://www.allround-pc.com/wp-content/uploads/2021/07/Nintendo-Switch-OLED-Modell-Konsole-1.jpg',
+  'https://assetsio.reedpopcdn.com/nintendo-switch-pro_2TAPP3I.jpg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp'
+])
+const currentIndex = ref(0)
+
+function nextSlide() {
+  currentIndex.value = (currentIndex.value + 1) % slides.value.length
+}
+
+function prevSlide() {
+  currentIndex.value = currentIndex.value > 0 ? currentIndex.value - 1 : slides.value.length - 1
 }
 </script>
 
@@ -41,10 +37,9 @@ export default {
   margin: 0 auto;
   width: 80%;
   height: 80%;
-
 }
 
-.pi{
+.pi {
   margin-top: 20px;
   margin-left: 10px;
   margin-right: 10px;
@@ -52,7 +47,6 @@ export default {
   border-radius: 100%;
   padding: 10px;
   background-color: #271f1f;
-  
 }
 
 .slider {

@@ -4,21 +4,20 @@ import { getStorage, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { ref, computed } from 'vue'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { useUser } from './useUser'
+import * as firebase from 'firebase/storage'
 
 export const useContent = () => {
   const content = ref()
   const contentList = ref([])
   const newContent = ref({
-    author: ''
-  })
-
-  const newGame = ref({
+    image: null,
+    author: '',
     name: '',
     price: '',
     year: '',
-    image: null,
     description: '',
   })
+
 
   const loading = ref({
     content: false,
@@ -49,18 +48,23 @@ export const useContent = () => {
   }
 
   async function addContent() {
-    const { userToObject } = useUser()
     loading.value.newContent = true
+    
+    const { userToObject } = useUser()
     try {
+      console.log(newContent)
+      console.log(userToObject.value)
       if (newContent.value && userToObject.value) {
         newContent.value.author = userToObject.value
-        await addDoc(collection(db, 'contents'), newContent.value)
-        loading.value.newContent = false
+        const res = await addDoc(collection(db, 'contents'), newContent.value)
+        return res;
+        // loading.value.newContent = false
       }
     } catch (error) {
       console.error(error)
     }
   }
+
 
   async function deleteContent(id) {
     try {
@@ -72,7 +76,32 @@ export const useContent = () => {
     }
   }
 
+  async function uploadImage(file) {
+    console.log(file)
+    const storage = getStorage()
+    console.log(storage)
+    const storageRef = firebase.ref(storage, 'contens/' + file.name)
+    console.log(storageRef)
+
+    uploadBytes(storageRef, file)
+      .then(() => {
+        console.log('Файл успешно загружен!')
+        firebase
+        .getDownloadURL(storageRef)
+          .then((downloadURL) => {
+            newContent.value.image = downloadURL
+          })
+          .catch((error) => {
+            console.error('Ошибка получения ссылки на загруженный файл:', error)
+          })
+      })
+      .catch((error) => {
+        console.error('Ошибка загрузки файла:', error)
+      })
+  }
+
   return {
+    uploadImage,
     content,
     contentList,
     loading,
@@ -81,6 +110,5 @@ export const useContent = () => {
     getContentById,
     addContent,
     deleteContent,
-    newGame,
   }
 }
