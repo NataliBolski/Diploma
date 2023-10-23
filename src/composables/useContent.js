@@ -1,90 +1,86 @@
-import { collection, getDocs, addDoc } from 'firebase/firestore'
+import { getDocs, addDoc, doc, collection, deleteDoc } from 'firebase/firestore'
 import { db, storage } from '@/firebase'
 import { getStorage, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { ref, computed } from 'vue'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { useUser } from './useUser'
 
 export const useContent = () => {
-  const user = ref()
-  const userList = ref([])
+  const content = ref()
+  const contentList = ref([])
+  const newContent = ref({
+    author: ''
+  })
+
+  const newGame = ref({
+    name: '',
+    price: '',
+    year: '',
+    image: null,
+    description: '',
+  })
 
   const loading = ref({
-    user: false,
-    userList: false
+    content: false,
+    contentList: false,
+    newContent: false
   })
 
-  const auth = getAuth()
-
-  const userRemake = computed(() => {
-    if (user.value) {
-      return {
-        displayName: user.value.displayName,
-        email: user.value.email,
-        photoURL: user.value.photoURL,
-        uid: user.value.uid
-      }
-    }
-    return null
-  })
-
-  function googleRegister() {
-    const provider = new GoogleAuthProvider()
-
-    signInWithPopup(auth, provider)
-      .then(async (userCredential) => {
-        user.value = userCredential.user
-        await addUserToMainDatabase()
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
-
-  function googleLogout() {
-    auth.signOut()
-    user.value = null
-  }
-
-  async function addUserToMainDatabase() {
-    loading.value.user = true
+  async function getAllContent() {
+    loading.value.contentList = true
     try {
-      if (userRemake.value) {
-        await getAllUsers()
-        if (!checkUserInDataBase()) {
-          await addDoc(collection(db, 'users'), userRemake.value)
-        }
-      }
-      loading.value.user = false
+      const querySnapshot = await getDocs(collection(db, 'contents'))
+      contentList.value = querySnapshot.docs.map((doc) => doc.data())
+      loading.value.contentList = false
     } catch (error) {
       console.error(error)
     }
   }
 
-  async function getAllUsers() {
-    loading.value.userList = true
+  async function getContentById(id) {
+    loading.value.content = true
     try {
-      const querySnapshot = await getDocs(collection(db, 'users'))
-      querySnapshot.forEach((doc) => {
-        userList.value.push(doc.data())
-      })
-      loading.value.userList = false
+      const querySnapshot = await getDocs(collection(db, 'contents'))
+      content.value = querySnapshot.docs.map((doc) => doc.data()).find((item) => item.id === id)
+      loading.value.content = false
     } catch (error) {
       console.error(error)
     }
   }
 
-  function checkUserInDataBase() {
-    return userList.value.some((item) => item.uid === userRemake.value?.uid)
+  async function addContent() {
+    const { userToObject } = useUser()
+    loading.value.newContent = true
+    try {
+      if (newContent.value && userToObject.value) {
+        newContent.value.author = userToObject.value
+        await addDoc(collection(db, 'contents'), newContent.value)
+        loading.value.newContent = false
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  function googleLogout() {
-    localStorage.removeItem('user')
+  async function deleteContent(id) {
+    try {
+      if (content.value) {
+        await deleteDoc(doc(db, 'contents', id))
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return {
-    user,
+    content,
+    contentList,
     loading,
-    googleRegister,
-    googleLogout
+    newContent,
+    getAllContent,
+    getContentById,
+    addContent,
+    deleteContent,
+    newGame,
   }
 }

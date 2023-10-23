@@ -52,26 +52,22 @@ const menuItems = ref([
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Kablammo&family=Kanit:wght@200;400&family=Montserrat:wght@400;500;600;800&family=Tilt+Neon&display=swap');
 
-.ninoNavbar {
-  background-image: url(https://4pda.to/s/as6yz0hOpVsxDASQU4ZSJxpFhz1tZa.jpg);
-  width: 100%;
-  height: 1000px;
-  background-size: cover;
-}
+
 
 .nav {
   padding-top: 5px;
   display: flex;
   justify-content: space-between;
   height:100px;
-  background-size: cover;
-  background-image: url(../assets/navbar_back.jpeg);
+  background-size: cover; 
+  background-color: #1d0000
 }
 .logo {
+  background-image: url(https://gamemag.ru/images/cache/News/News150709/496682b5b5-1_350x250.jpg);
   background-size: cover;
-  height: 70px;
-  width: 60px;
-  margin-left: 20px;
+  height: 90px;
+  width: 100px;
+  margin-left: 10px;
 }
 
 
@@ -89,15 +85,18 @@ ul {
 ul a {
   text-decoration: none;
   color: white;
-  margin-right: 80px;
+  margin-right: 40px;
   text-transform: uppercase;
   font-family: Montserrat;
   font-size: 18px;
   font-weight: 600;
+  letter-spacing: 2px;
+  margin-left: 40px;
+  transition: color 0.3s ease;
 }
 
 a:hover {
-  color: black;
+  color: rgb(207, 0, 0);
 }
 
 .btn {
@@ -113,7 +112,7 @@ a:hover {
 }
 
 .btn:hover {
-  color: black;
+  color: rgb(207, 0, 0);
 }
 
 .p-button-label {
