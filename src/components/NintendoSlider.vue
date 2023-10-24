@@ -1,5 +1,5 @@
 <template>
-  <div class="sliderCont">
+  <div class="sliderCont" :class="{'scrolled': isScrolled}">
     <div class="slider">
       <div class="slides" :style="{ transform: 'translateX(' + -currentIndex * 100 + '%)' }">
         <div class="slide" v-for="(slide, index) in slides" :key="index">
@@ -9,11 +9,33 @@
       <button @click="prevSlide" class="pi pi-chevron-left"></button>
       <button @click="nextSlide" class="pi pi-chevron-right"></button>
     </div>
+    <div class="bottomText" v-show="isScrolled">
+      <p>Добро пожаловать!</p>
+    </div>
   </div>
-</template>
+</template> 
 
 <script setup>
-import {ref} from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const isScrolled = ref(false);
+const scrollThreshold = 40; // Пороговое значение для скролла
+const transformValue = 30; 
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > scrollThreshold;
+  
+  const transformOffset = isScrolled.value ? transformValue : 0;
+  const translateY = `translateY(-${transformOffset}%)`;
+  document.querySelector('.sliderCont').style.transform = translateY;
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 
 const slides = ref([
   'https://kumundra.com/wp-content/uploads/2023/03/1677694615_Insider-Claims-Switch-2-sera-annonce-cette-annee.jpg',
@@ -33,11 +55,23 @@ function prevSlide() {
 </script>
 
 <style scoped>
+.sliderCont.scrolled {
+  transform: translateY(-30%) !important;
+  transition: transform 2s ease;
+}
 .sliderCont {
+  z-index: -1;
   margin: 0 auto;
   width: 80%;
   height: 80%;
   margin-top: 100px;
+  transition: transform 2s ease;
+}
+
+.slides {
+  width: 100%;
+  display: flex;
+  transition: transform 0.5s ease-in-out;
 }
 
 .pi {
@@ -57,12 +91,6 @@ function prevSlide() {
   position: relative;
 }
 
-.slides {
-  width: 100%;
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-
 .slide {
   flex: 0 0 100%;
 }
@@ -70,5 +98,29 @@ function prevSlide() {
 img {
   width: 100%;
   height: 650px;
+}
+
+.bottomText {
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: block;
+  opacity: 0; 
+  animation: fadeIn 2s ease forwards; /* Длительность 1 секунда */
+  transition: opacity 2s ease;
+  margin-top: 60px;
+  font-family: Montserrat;
+  margin-bottom: -270px;
+  font-size: 45px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>

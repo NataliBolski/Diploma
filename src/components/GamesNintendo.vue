@@ -37,13 +37,16 @@ onMounted(async () => {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: space-between; /* Выравнивание карточек по горизонтали */
+    justify-content: space-between; 
     width: 100%;
   }
   
   .trip {
-    width: calc(33.33% - 10px); /* Ширина карточки (33.33% минус отступ) */
+    width: calc(33.33% - 10px); 
+    transition: transform 0.3s ease; 
   }
-  
 
+  .trip:hover {
+    transform: scale(1.1); 
+}
 </style>
