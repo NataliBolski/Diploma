@@ -15,6 +15,7 @@ export const useContent = () => {
     name: '',
     price: '',
     year: '',
+    genre: '',
     description: '',
   })
 

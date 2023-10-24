@@ -55,12 +55,17 @@ const menuItems = ref([
 
 
 .nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding-top: 5px;
   display: flex;
   justify-content: space-between;
-  height:100px;
-  background-size: cover; 
-  background-color: #1d0000
+  height: 100px;
+  background-size: cover;
+  background-color: #1d0000;
+  z-index: 1000;
 }
 .logo {
   background-image: url(https://gamemag.ru/images/cache/News/News150709/496682b5b5-1_350x250.jpg);

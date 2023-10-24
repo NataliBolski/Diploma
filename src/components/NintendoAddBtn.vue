@@ -18,10 +18,12 @@ async function add() {
 
 function clear() {
   newContent.value = {
+    image: '',
     author: '',
     name: '',
     price: 0,
     year: '',
+    genre: '',
     description: ''
   }
 }
@@ -74,6 +76,16 @@ async function onUpload(e) {
         v-model="newContent.year"
         view="year"
         dateFormat="yy"
+      />
+    </div>
+    <div class="p-field">
+      <label for="price">Жанр:</label>
+      <InputText
+        style="margin-top: 10px; margin-bottom: 10px; width: 100%"
+        id="name"
+        v-model="newContent.genre"
+        mode="currency"
+        locale="ru-ru"
       />
     </div>
     <span class="p-float-label">

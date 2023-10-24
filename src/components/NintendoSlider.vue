@@ -37,6 +37,7 @@ function prevSlide() {
   margin: 0 auto;
   width: 80%;
   height: 80%;
+  margin-top: 100px;
 }
 
 .pi {
