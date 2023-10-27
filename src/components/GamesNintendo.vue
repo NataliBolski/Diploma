@@ -39,6 +39,7 @@ onMounted(async () => {
     gap: 10px;
     justify-content: space-between; 
     width: 100%;
+    font-family: Montserrat;
   }
   
   .trip {

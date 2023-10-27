@@ -37,7 +37,7 @@ async function onUpload(e) {
 </script>
 
 <template>
-  <Button label="Show" icon="pi pi-external-link" @click="visible = true" />
+  <Button class="addBtn" icon="pi pi-plus" @click="visible = true" />
   <Dialog v-model:visible="visible" modal header="Добавить игру" :style="{ width: '30vw' }">
     <div class="card flex flex-column align-items-center gap-3">
       <InputText
@@ -113,5 +113,15 @@ async function onUpload(e) {
 </template>
 
 <style>
+.addBtn {
+  margin-left: 160px;
+  margin-top: 30px;
+  background-color: #1d000098;
+  color: aliceblue;
+  border: #1d000098;
+  font-family: Montserrat;
+  border-radius: 50px;
+
+};
 
 </style>

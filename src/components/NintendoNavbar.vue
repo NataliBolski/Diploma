@@ -2,10 +2,11 @@
 import PButton from 'primevue/button';
 import { useUser } from '@/composables/useUser'
 import {ref} from 'vue'
+import { RouterLink } from 'vue-router';
 const { user, googleRegister, googleLogout } = useUser()
 
 const menuItems = ref([
-        { id: 1, label: 'Главная', route: '/' },
+        { id: 1, label: 'Главная', route: '/home' },
         { id: 2, label: 'Игры', route: '/games' },
         { id: 3, label: 'О нас', route: '/about' },
         { id: 4, label: 'Покупки', route: '/purchases' }

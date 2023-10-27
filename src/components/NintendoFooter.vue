@@ -1,8 +1,8 @@
 <template>
     <div class="msgBtn">
-        <Button link><i class="pi pi-telegram"></i></Button>   
-        <Button link><i class="pi pi-whatsapp"></i></Button>
-        <Button link><i class="pi pi-twitter"></i></Button>
+        <Button link><a href="https://www.instagram.com/nintendoamerica/"><i class="pi pi-instagram"></i></a></Button> 
+        <Button link><a href="https://www.reddit.com/r/nintendo/"><i class="pi pi-reddit"></i></a></Button>     
+        <Button link><a href="https://twitter.com/NintendoEurope"><i class="pi pi-twitter"></i></a></Button>   
         </div>
 </template>
 

@@ -19,7 +19,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const isScrolled = ref(false);
-const scrollThreshold = 40; // Пороговое значение для скролла
+const scrollThreshold = 40; 
 const transformValue = 30; 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > scrollThreshold;
