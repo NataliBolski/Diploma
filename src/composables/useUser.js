@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '@/firebase'
 // import { getStorage, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
 const user = ref()
@@ -26,9 +26,10 @@ const userToObject = computed(() => {
       email: user.value.email,
       displayName: user.value.displayName,
       photoURL: user.value.photoURL,
-      favourites: user.value.favourites ?? [],
-      status: user.value.status ?? 'user',
-      reviews: user.value.reviews ?? []
+      favourites: user.value.favourites || [],
+      status: user.value.status || 'user',
+      reviews: user.value.reviews || [],
+      bucket: user.value.bucket || []
     }
   }
   return null
@@ -103,17 +104,22 @@ export const useUser = () => {
 
   // обновить данные в базе данных
   async function updateUserInDatabase() {
+    console.log(1)
+    console.log(user.value)
     if (user.value) {
       try {
         const userDocRef = doc(db, 'users', user.value.uid)
         const existingUserDoc = await getDoc(userDocRef)
-        if (existingUserDoc.exists()) {
+        console.log(existingUserDoc)
+        if (existingUserDoc) {
           const userData = existingUserDoc.data()
           const updatedData = {
             ...userData,
             ...user.value
           }
+          console.log(updatedData)
           await setDoc(userDocRef, updatedData)
+          addToLocalStorage()
         }
       } catch (error) {
         console.error(error)
@@ -149,11 +155,11 @@ export const useUser = () => {
 
   // это надо не всем
   // для постоянной связи сервиса с базой данных
-  watch(user.value, async (newValue) => {
-    if (newValue) {
-      await updateUserInDatabase()
-    }
-  })
+  // watch(user.value, async (newValue) => {
+  //   if (newValue) {
+  //     await updateUserInDatabase()
+  //   }
+  // })
 
   return {
     user,
@@ -165,6 +171,7 @@ export const useUser = () => {
     userList,
     addToLocalStorage,
     getUserFromLocalStorage,
-    removeFromLocalStorage
+    removeFromLocalStorage,
+    updateUserInDatabase
   }
 }

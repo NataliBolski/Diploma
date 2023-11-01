@@ -46,7 +46,7 @@ async function onUpload(e) {
         placeholder="Введите ваше имя"
         style="margin-top: 10px; margin-bottom: 10px; width: 100%"
       />
-    </div>
+    </div>  
     <div class="p-field">
       <label for="price">Название игры:</label>
       <InputText

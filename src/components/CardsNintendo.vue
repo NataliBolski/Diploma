@@ -4,6 +4,9 @@ import Card from 'primevue/card'
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 import Button from 'primevue/button'
+import { useContent } from '../composables/useContent'
+
+const { addGameToBucket } = useContent()
 
 defineProps({
   content: {
@@ -27,7 +30,13 @@ function formatDate(date) {
     <template #title> {{ content.name }} </template>
     <template #content>
       <div class="backet">
-      <Button class="basketBtn" label="Купить" @click="add" text /></div>
+        <Button
+          class="basketBtn"
+          label="Купить"
+          @click="addGameToBucket(content.id, content)"
+          text
+        />
+      </div>
       <p>Цена: {{ content.price }} тг</p>
       <p>Год выпуска: {{ formatDate(content.year) }} г</p>
       <p>Жанр: {{ content.genre }}</p>
@@ -37,7 +46,8 @@ function formatDate(date) {
             {{ content.description }}
           </p>
         </AccordionTab>
-      </Accordion>    </template>
+      </Accordion>
+    </template>
   </Card>
 </template>
 
@@ -46,8 +56,6 @@ function formatDate(date) {
   border-radius: 20px;
   width: 470px;
   height: 220px;
-  margin-top: 10px;
-  margin-left: 10px;
 }
 
 .gameCard {
@@ -66,21 +74,20 @@ function formatDate(date) {
   border: #1d000060;
 }
 
-.basketBtn{
-  background-color:  #45a049;
+.basketBtn {
+  background-color: #45a049;
   color: aliceblue;
   font-family: Montserrat;
   border-radius: 50px;
   transition: box-shadow 0.3s ease;
-
 }
 
 .basketBtn:hover {
   box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.785);
 }
-.backet{
+.backet {
   width: 100%;
-  display: flex ;
+  display: flex;
   justify-content: end;
   margin-top: -60px;
 }

@@ -25,6 +25,7 @@ const menuItems = ref([
             </a>
           </ul>
         </nav>
+        {{ user?.bucket }}
       </div>
       <div class="side">
         <p-button 

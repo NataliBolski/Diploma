@@ -1,7 +1,7 @@
 <template>
   <div class="games">
     <div class="card">
-      <div class="trip" v-for="content in contents" :key="content.id">
+      <div v-for="content in contentList" :key="content.id">
         <CardsNintendo :content="content" />
       </div>
     </div>
@@ -9,26 +9,14 @@
 </template>
 
 <script setup>
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '@/firebase'
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import CardsNintendo from '@/components/CardsNintendo.vue'
+import {useContent} from '../composables/useContent'
 
-const contents = ref([])
+const {getAllContent, contentList} = useContent()
 
 onMounted(async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, 'contents'))
-    querySnapshot.forEach((doc) => {
-      contents.value.push({
-        id: doc.id,
-        ...doc.data()
-      })
-      console.log(contents.value)
-    })
-  } catch (error) {
-    console.error('Error getting reviews:', error)
-  }
+  await getAllContent()
 })
 </script>
 
@@ -42,12 +30,4 @@ onMounted(async () => {
     font-family: Montserrat;
   }
   
-  .trip {
-    width: calc(33.33% - 10px); 
-    transition: transform 0.3s ease; 
-  }
-
-  .trip:hover {
-    transform: scale(1.1); 
-}
 </style>

@@ -1,15 +1,23 @@
 <script setup>
-import NintendoNavbar from './components/NintendoNavbar.vue';
-import NintendoSlider from './components/NintendoSlider.vue';
-import NintendoFooter from './components/NintendoFooter.vue';
-import GamesNintendo from './components/GamesNintendo.vue';
-import NintendoAddBtn from './components/NintendoAddBtn.vue';
-import AboutNintendo from './components/AboutNintendo.vue';
-import NintendoProm from './components/NintendoProm.vue';
+import NintendoNavbar from './components/NintendoNavbar.vue'
+import NintendoSlider from './components/NintendoSlider.vue'
+import NintendoFooter from './components/NintendoFooter.vue'
+import GamesNintendo from './components/GamesNintendo.vue'
+import NintendoAddBtn from './components/NintendoAddBtn.vue'
+import AboutNintendo from './components/AboutNintendo.vue'
+import NintendoProm from './components/NintendoProm.vue'
+import GameShop from './components/GameShop.vue'
+import { onMounted } from 'vue'
+import { useUser } from './composables/useUser'
 
+const { getUserFromLocalStorage } = useUser()
+
+onMounted(() => {
+  getUserFromLocalStorage()
+})
 </script>
 
-<template>  
+<template>
   <NintendoNavbar />
   <NintendoSlider />
   <NintendoFooter />
@@ -17,9 +25,10 @@ import NintendoProm from './components/NintendoProm.vue';
   <NintendoAddBtn />
   <AboutNintendo />
   <NintendoProm />
+  <GameShop />
+
 
   <!-- <router-view /> -->
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -5,11 +5,13 @@ import { ref, computed } from 'vue'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { useUser } from './useUser'
 import * as firebase from 'firebase/storage'
+import {createId} from '../utils/index'
 
 export const useContent = () => {
   const content = ref()
   const contentList = ref([])
   const newContent = ref({
+    id: createId(),
     image: null,
     author: '',
     name: '',
@@ -26,11 +28,21 @@ export const useContent = () => {
     newContent: false
   })
 
+
+  const { userToObject, user, updateUserInDatabase } = useUser()
+
   async function getAllContent() {
     loading.value.contentList = true
+    contentList.value.length = 0;
     try {
       const querySnapshot = await getDocs(collection(db, 'contents'))
-      contentList.value = querySnapshot.docs.map((doc) => doc.data())
+      querySnapshot.forEach((doc) => {
+        const compressive = {
+          firebaseId: doc.id,
+          ...doc.data()
+        }
+        contentList.value.push(compressive)
+      })
       loading.value.contentList = false
     } catch (error) {
       console.error(error)
@@ -50,8 +62,7 @@ export const useContent = () => {
 
   async function addContent() {
     loading.value.newContent = true
-    
-    const { userToObject } = useUser()
+  
     try {
       console.log(newContent)
       console.log(userToObject.value)
@@ -67,14 +78,26 @@ export const useContent = () => {
   }
 
 
-  async function deleteContent(id) {
+  async function deleteDocById(firebaseId) {
+    loading.value.content = true
     try {
-      if (content.value) {
-        await deleteDoc(doc(db, 'contents', id))
-      }
+      await deleteDoc(doc(db, 'content', firebaseId))
+      loading.value.content = false
     } catch (error) {
       console.error(error)
     }
+  }
+
+  async function addGameToBucket(id,content) {
+    if (user.value) {
+      user.value.bucket = new Set(user.value.bucket)
+      user.value.bucket.add(content.id) // исправлено здесь
+      user.value.bucket = Array.from(user.value.bucket) || [user.value.bucket] // исправлено здесь
+      console.log(user.value.bucket);
+      await updateUserInDatabase()
+      return
+    }
+    return
   }
 
   async function uploadImage(file) {
@@ -100,6 +123,7 @@ export const useContent = () => {
         console.error('Ошибка загрузки файла:', error)
       })
   }
+  
 
   return {
     uploadImage,
@@ -110,6 +134,8 @@ export const useContent = () => {
     getAllContent,
     getContentById,
     addContent,
-    deleteContent,
+    addGameToBucket,
+    deleteDocById, 
+
   }
 }
