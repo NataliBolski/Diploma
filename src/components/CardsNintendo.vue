@@ -62,8 +62,13 @@ function formatDate(date) {
   margin: 30px;
   border-radius: 30px;
   background-color: #1d000087;
+  transition: transform 0.3s ease;
+  width: 470px;
 }
 
+.gameCard:hover{
+  transform: scale(1.1);
+}
 .p-accordion .p-accordion-header .p-accordion-header-link {
   background-color: #1d000060;
   border: #1d000098;

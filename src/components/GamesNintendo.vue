@@ -1,5 +1,5 @@
 <template>
-  <div class="games">
+  <div id="games" class="games">
     <div class="card">
       <div v-for="content in contentList" :key="content.id">
         <CardsNintendo :content="content" />
@@ -29,5 +29,6 @@ onMounted(async () => {
     width: 100%;
     font-family: Montserrat;
   }
+
   
 </style>

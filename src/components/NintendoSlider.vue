@@ -1,5 +1,5 @@
 <template>
-  <div class="sliderCont" :class="{'scrolled': isScrolled}">
+  <div id="home" class="sliderCont" :class="{'scrolled': isScrolled}">
     <div class="slider">
       <div class="slides" :style="{ transform: 'translateX(' + -currentIndex * 100 + '%)' }">
         <div class="slide" v-for="(slide, index) in slides" :key="index">

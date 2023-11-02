@@ -1,25 +1,35 @@
 <template>
-    <OrderList v-model="products" listStyle="height:auto" dataKey="id">
-        <template #header> List of Products </template>
-        <template #item="slotProps">
-            <div class="flex flex-wrap p-2 align-items-center gap-3">
-                <img  :src="content.image"/>
-                <div class="flex-1 flex flex-column gap-2">
-                    <span class="font-bold">{{ content.name }}</span>
-                    <div class="flex align-items-center gap-2">
-                        <i class="pi pi-tag text-sm"></i>
-                    </div>
-                </div>
-                <span class="font-bold text-900">$ {{ content.price }}</span>
-            </div>
-        </template>
-    </OrderList>
+  <Button class="basketBtn" label="Открыть корзину" @click="fetchContent()" text />
 </template>
 
 <script setup>
-import OrderList from 'primevue/orderlist';
-import { useContent} from '../composables/useContent'
+import { ref } from 'vue'
+import { useUser } from '../composables/useUser'
+import { useContent } from '../composables/useContent'
+import Button from 'primevue/button'
 
 const { user } = useUser()
-const products = ref([]);
+const { getContentById } = useContent()
+const contentResult = ref(null)
+
+const fetchContent = async () => {
+  if (user && user.value.bucket) {
+    const bucketValues = [...user.value.bucket]
+    for (let i = 0; i < bucketValues.length; i++) {
+      try {
+        const id = bucketValues[i]
+        console.log(`какой ID: ${id}`)
+        const result = await getContentById(id)
+        console.log(`что там есть ID ${id}:`, result)
+        contentResult.value = result
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  } else {
+    console.log('пустая')
+  }
+}
 </script>
+
+

@@ -27,8 +27,10 @@ onMounted(() => {
   <NintendoProm />
   <GameShop />
 
-
-  <!-- <router-view /> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+*{
+  scroll-behavior: smooth;
+}
+</style>
