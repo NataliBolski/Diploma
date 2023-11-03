@@ -39,7 +39,7 @@ import Card from 'primevue/card'
   font-family: Montserrat;
   display: flex;
   justify-content: space-between;
-  background-color:  #1d000087;
+  background-color:  #45020287;
   border-radius: 50px;
   width: 1000px;
   padding-left: 50px;
