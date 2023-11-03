@@ -53,7 +53,9 @@ export const useContent = () => {
     loading.value.content = true
     try {
       const querySnapshot = await getDocs(collection(db, 'contents'))
-      content.value = querySnapshot.docs.map((doc) => doc.data()).find((item) => item.id === id)
+      content.value = querySnapshot.docs
+        .map((doc) => doc.data())
+        .find((item) => item.id === id)
       loading.value.content = false
     } catch (error) {
       console.error(error)
