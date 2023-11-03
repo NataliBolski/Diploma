@@ -1,5 +1,5 @@
 <template>
-  <Button class="basketBtn" label="Открыть корзину" @click="fetchContent()" text />
+  <Button id="buy" class="basketBtn" label="Открыть корзину" @click="fetchContent()" text />
 </template>
 
 <script setup>
@@ -25,5 +25,3 @@ async function fetchContent() {
   }
 }
 </script>
-
-

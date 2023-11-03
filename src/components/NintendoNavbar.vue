@@ -31,7 +31,7 @@ onMounted(() => {
             <a href="#home">Главная</a>
             <a href="#games">Игры</a>
             <a href="#about">О нас</a>
-            <a href="#purchases">Покупки</a>
+            <a href="#buy">Покупки</a>
           </ul>
         </nav>
       </div>

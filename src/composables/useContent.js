@@ -5,7 +5,7 @@ import { ref, computed } from 'vue'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { useUser } from './useUser'
 import * as firebase from 'firebase/storage'
-import {createId} from '../utils/index'
+import { createId } from '../utils/index'
 
 export const useContent = () => {
   const content = ref()
@@ -18,9 +18,8 @@ export const useContent = () => {
     price: '',
     year: '',
     genre: '',
-    description: '',
+    description: ''
   })
-
 
   const loading = ref({
     content: false,
@@ -28,12 +27,11 @@ export const useContent = () => {
     newContent: false
   })
 
-
   const { userToObject, user, updateUserInDatabase } = useUser()
 
   async function getAllContent() {
     loading.value.contentList = true
-    contentList.value.length = 0;
+    contentList.value.length = 0
     try {
       const querySnapshot = await getDocs(collection(db, 'contents'))
       querySnapshot.forEach((doc) => {
@@ -53,9 +51,7 @@ export const useContent = () => {
     loading.value.content = true
     try {
       const querySnapshot = await getDocs(collection(db, 'contents'))
-      content.value = querySnapshot.docs
-        .map((doc) => doc.data())
-        .find((item) => item.id === id)
+      content.value = querySnapshot.docs.map((doc) => doc.data()).find((item) => item.id === id)
       loading.value.content = false
     } catch (error) {
       console.error(error)
@@ -64,21 +60,20 @@ export const useContent = () => {
 
   async function addContent() {
     loading.value.newContent = true
-  
+
     try {
       console.log(newContent)
       console.log(userToObject.value)
       if (newContent.value && userToObject.value) {
         newContent.value.author = userToObject.value
         const res = await addDoc(collection(db, 'contents'), newContent.value)
-        return res;
+        return res
         // loading.value.newContent = false
       }
     } catch (error) {
       console.error(error)
     }
   }
-
 
   async function deleteDocById(firebaseId) {
     loading.value.content = true
@@ -90,12 +85,12 @@ export const useContent = () => {
     }
   }
 
-  async function addGameToBucket(id,content) {
+  async function addGameToBucket(id, content) {
     if (user.value) {
       user.value.bucket = new Set(user.value.bucket)
       user.value.bucket.add(content.id) // исправлено здесь
       user.value.bucket = Array.from(user.value.bucket) || [user.value.bucket] // исправлено здесь
-      console.log(user.value.bucket);
+      console.log(user.value.bucket)
       await updateUserInDatabase()
       return
     }
@@ -113,7 +108,7 @@ export const useContent = () => {
       .then(() => {
         console.log('Файл успешно загружен!')
         firebase
-        .getDownloadURL(storageRef)
+          .getDownloadURL(storageRef)
           .then((downloadURL) => {
             newContent.value.image = downloadURL
           })
@@ -124,9 +119,7 @@ export const useContent = () => {
       .catch((error) => {
         console.error('Ошибка загрузки файла:', error)
       })
-      
   }
-  
 
   return {
     uploadImage,
@@ -138,7 +131,6 @@ export const useContent = () => {
     getContentById,
     addContent,
     addGameToBucket,
-    deleteDocById, 
-
+    deleteDocById
   }
 }
